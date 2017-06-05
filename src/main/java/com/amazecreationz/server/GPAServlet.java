@@ -30,7 +30,6 @@ public class GPAServlet extends HttpServlet implements ServerConstants {
         super();
     }
     
-	@SuppressWarnings("null")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Storage storage = StorageOptions.newBuilder()
 				.setProjectId(projectId)
@@ -41,7 +40,7 @@ public class GPAServlet extends HttpServlet implements ServerConstants {
 		String fileName = userId +".pdf";
 		String outputFileName = TMP_DIR +"/"+ fileName;
 		Blob blob = storage.get(BUCKET_URL, "appData/gradecards/" +fileName);
-		JsonObject output = null;
+		JsonObject output = new JsonObject();
 		if(blob !=null) {
 			ReadChannel readChannel = blob.reader();
 			FileOutputStream fileOuputStream = new FileOutputStream(outputFileName);
