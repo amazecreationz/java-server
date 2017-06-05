@@ -50,6 +50,6 @@ public class GPAServlet extends HttpServlet implements ServerConstants {
 		}
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST");
-		response.getWriter().append(output.getAsString());
+		response.getWriter().append(output.toString());
 	}
 }
