@@ -17,6 +17,7 @@ import com.google.cloud.ReadChannel;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import com.google.gson.JsonObject;
 
 /**
  * Servlet implementation class GPAServlet
@@ -29,6 +30,7 @@ public class GPAServlet extends HttpServlet implements ServerConstants {
         super();
     }
     
+	@SuppressWarnings("null")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Storage storage = StorageOptions.newBuilder()
 				.setProjectId(projectId)
@@ -39,14 +41,16 @@ public class GPAServlet extends HttpServlet implements ServerConstants {
 		String fileName = userId +".pdf";
 		String outputFileName = TMP_DIR +"/"+ fileName;
 		Blob blob = storage.get(BUCKET_URL, "appData/gradecards/" +fileName);
-		String output = null;
+		JsonObject output = null;
 		if(blob !=null) {
 			ReadChannel readChannel = blob.reader();
 			FileOutputStream fileOuputStream = new FileOutputStream(outputFileName);
 			fileOuputStream.getChannel().transferFrom(readChannel, 0, Long.MAX_VALUE);
 			fileOuputStream.close();
-			output = new NITCService(outputFileName).process().getAsJSON().toString();
+			output.add("studentData", new NITCService(outputFileName).process().getAsJSON());
 		}
-		response.getWriter().append(output);
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST");
+		response.getWriter().append(output.getAsString());
 	}
 }

@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter(description = "For adding cors headers", asyncSupported = true, urlPatterns = { "/*" })
+//@WebFilter(description = "For adding cors headers", asyncSupported = true, urlPatterns = { "/*" })
 public class CORSFilter implements Filter {
 
     public CORSFilter() {
